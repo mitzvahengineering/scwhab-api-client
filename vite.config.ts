@@ -11,7 +11,9 @@ export default defineConfig({
   plugins: [react(), basicSsl()],
   server: {
     port: 5173,
-    https: true
+    https: true,
+    host: '127.0.0.1', // Force IPv4
+    strictPort: true   // Don't try other ports if 5173 is taken
   },
   resolve: {
     alias: {
