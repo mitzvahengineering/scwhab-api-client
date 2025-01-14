@@ -1,6 +1,7 @@
 // src/App.tsx
 import React, { useState } from 'react';
-import { Input } from './components/ui/input';
+import { authService } from './services/auth';
+import { Input } from "./components/ui/input";
 import { Button } from "./components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card";
 import { Alert, AlertDescription } from "./components/ui/alert";
@@ -34,9 +35,15 @@ const App: React.FC = () => {
 
     try {
       // Replace with actual API endpoint and authentication
-      const response = await fetch(`YOUR_SCHWAB_API_ENDPOINT/options/${ticker}`, {
+      if (!authService.isAuthenticated()) {
+        authService.initiateOAuthFlow();
+        return;
+      }
+
+      const accessToken = authService.getAccessToken();
+      const response = await fetch(`https://api.schwab.com/v1/options/${ticker}`, {
         headers: {
-          'Authorization': 'Bearer YOUR_API_KEY',
+          'Authorization': `Bearer ${accessToken}`,
           'Content-Type': 'application/json',
         },
       });
