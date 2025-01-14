@@ -1,50 +1,73 @@
-# React + TypeScript + Vite
+# Schwab Options Chain Viewer
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Introduction
 
-Currently, two official plugins are available:
+This project implements a modern web interface for viewing options chain data from Charles Schwab's Developer API. Built with React, TypeScript, and Vite, it demonstrates a production-ready approach to OAuth2 authentication and real-time financial data visualization. The application showcases best practices in frontend development while providing a practical tool for options traders and developers interested in financial market data integration.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Technical Architecture
 
-## Expanding the ESLint configuration
+The application is structured around several core technologies, each chosen for specific advantages they bring to the project. At its foundation, Vite serves as our build tool and development server, offering superior performance through its native ES modules approach and instant hot module replacement. React and TypeScript form the core of our frontend, providing a robust type system and component-based architecture that scales well with application complexity.
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+Authentication is handled through OAuth 2.0's three-legged flow, a security standard required by Schwab's API. This implementation demonstrates proper token management, secure state handling, and callback processing - all crucial elements in modern API authentication. The authentication flow is managed through a dedicated service that handles token refresh and storage, ensuring a seamless user experience while maintaining security best practices.
 
-- Configure the top-level `parserOptions` property like this:
+For the user interface, we utilize shadcn/ui components, which offer a sophisticated design system built on top of Radix UI primitives. This choice provides accessible, customizable components that maintain consistency while allowing for extensive styling through Tailwind CSS. The component library is particularly well-suited for displaying financial data, offering tables, cards, and form elements that can be customized to match any design requirements.
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## Getting Started
+
+Starting with this project requires some initial setup, particularly regarding API credentials and environment configuration. First, you'll need to create a developer account with Charles Schwab and register your application to obtain the necessary credentials. These credentials should be stored in environment variables to maintain security and flexibility across different deployment environments.
+
+Create a `.env` file in your project root with the following structure:
+```
+VITE_SCHWAB_CLIENT_ID=your_client_id_here
+VITE_SCHWAB_CLIENT_SECRET=your_client_secret_here
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
-
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+To install dependencies and start the development server:
+```bash
+npm install
+npm run dev
 ```
+
+## Authentication Flow
+
+Understanding the OAuth flow is crucial for working with this application. When a user first attempts to fetch options data, they're redirected to Schwab's authentication endpoint. This begins the three-legged OAuth flow:
+
+1. The application redirects to Schwab's authorization server with the client ID and requested scopes.
+2. After user authentication, Schwab redirects back to our application's callback URL with an authorization code.
+3. Our application exchanges this code for access and refresh tokens.
+
+This process is handled automatically by our authentication service, which also manages token refresh when needed. The implementation follows OAuth 2.0 best practices, including state parameter validation to prevent CSRF attacks and secure token storage.
+
+## Deployment
+
+This application is designed to be deployed on AWS Amplify, which provides several advantages for hosting React applications. Amplify handles SSL certificate management, domain configuration, and continuous deployment from your GitHub repository. When deploying, ensure your environment variables are properly configured in the Amplify Console.
+
+The callback URL configuration is particularly important. In the Schwab developer portal, you'll need to configure the callback URL to match your deployed domain (e.g., `https://schwab.yourdomain.com/callback`). This same URL should be reflected in your application's configuration.
+
+## Development Considerations
+
+When developing locally, you'll want to understand a few key aspects of the application structure. The project uses a modular architecture where authentication, API calls, and UI components are separated into distinct concerns. This separation makes the code more maintainable and easier to test.
+
+Type safety is enforced throughout the application using TypeScript. This is particularly important when dealing with financial data, where accuracy is crucial. The types for API responses and internal state management are carefully defined to ensure data consistency.
+
+The user interface is built with accessibility in mind, following WCAG guidelines through the use of shadcn/ui components. These components provide proper ARIA attributes and keyboard navigation support out of the box, making the application usable for all users.
+
+## Future Enhancements
+
+While the current implementation provides a solid foundation, there are several areas where the application could be enhanced:
+
+Smart caching strategies could be implemented to reduce API calls and improve performance. This might involve storing frequently accessed data in local storage or implementing a service worker for offline capabilities.
+
+Real-time data updates could be added using WebSocket connections, allowing the options chain to update automatically as market conditions change. This would require additional integration with Schwab's streaming API services.
+
+Advanced filtering and analysis tools could be added to help users identify specific options contracts based on their trading strategies. This might include Greek calculations, implied volatility analysis, and custom screening criteria.
+
+## Contributing
+
+If you're interested in contributing to this project, please review the code structure and existing patterns before submitting pull requests. The project maintains high standards for code quality, including comprehensive TypeScript coverage and consistent styling through ESLint and Prettier configurations.
+
+Development should follow the existing patterns for component organization, state management, and type safety. All new features should include appropriate error handling and loading states to ensure a smooth user experience.
+
+## License
+
+This project is licensed under the MIT License, allowing for broad use and modification while maintaining attribution requirements. The license choice reflects our commitment to open source development while protecting both contributors and users.
