@@ -8,7 +8,8 @@ export const AUTH_CONFIG = {
   redirectUri: 'https://schwab.mitzvah.capital/callback',
   authorizationEndpoint: 'https://api.schwabapi.com/oauth/authorize',
   tokenEndpoint: 'https://api.schwabapi.com/oauth/token',
-  apiEndpoint: 'https://api.schwabapi.com/marketdata/v1'
+  apiEndpoint: 'https://api.schwabapi.com/marketdata/v1',
+  scope: 'marketdata' // Add the scope property
 };
 
 if (!clientId) {
