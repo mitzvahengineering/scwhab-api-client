@@ -1,9 +1,9 @@
 // src/App.tsx
 import React, { useState } from 'react';
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Input } from './components/ui/input';
+import { Button } from "./components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card";
+import { Alert, AlertDescription } from "./components/ui/alert";
 import { Loader2 } from "lucide-react";
 
 interface OptionsChainResponse {
