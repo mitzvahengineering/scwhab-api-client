@@ -1,6 +1,7 @@
 // src/App.tsx
 import React, { useState } from 'react';
 import { authService } from './services/auth';
+import { AUTH_CONFIG } from './config/auth';
 import { Input } from "./components/ui/input";
 import { Button } from "./components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "./components/ui/card";
@@ -41,7 +42,7 @@ const App: React.FC = () => {
       }
 
       const accessToken = authService.getAccessToken();
-      const response = await fetch(`https://api.schwab.com/v1/options/${ticker}`, {
+      const response = await fetch(`${AUTH_CONFIG.apiEndpoint}/chains?symbol=${ticker}`, {
         headers: {
           'Authorization': `Bearer ${accessToken}`,
           'Content-Type': 'application/json',
