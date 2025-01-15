@@ -78,9 +78,15 @@ npm install
 npm run dev
 ```
 
-### Quick Setup (via BASH configuration script)
+Once you have your Schwab credentials, you can proceed with either the automated or manual setup process detailed in the next section.
 
-After forking the repository, use our configuration script to set up your domain-specific instance:
+# Setup Options
+
+You can set up this project either through our automated configuration script or manually. Both methods are fully supported.
+
+## A. Automated Setup (Recommended)
+
+The fastest way to get started is using our configuration script:
 
 ```bash
 git clone [your-forked-repo-url]
@@ -100,12 +106,11 @@ You will be prompted to enter:
 - Domain (e.g., incremental.capital)
 - Subdomain for the service (e.g., schwab)
 
-The script will guide you through the remaining setup steps after configuration is complete.
+### Managing Updates with Automated Setup
 
-If you use the script, there will be the following implications for upstream updates that you'll not find in the rest of this documentation:
+When using the automated setup, your update workflow is streamlined:
 
-1. **Initial Setup**
-   The upstream remote is automatically configured by the setup script, but you can verify it:
+1. **Verify Remote Configuration**
    ```bash
    git remote -v
    ```
@@ -134,6 +139,80 @@ If you use the script, there will be the following implications for upstream upd
    cp .env.template .env
    ```
 
+## B. Manual Setup
+
+If you prefer more direct control over the setup process, you can configure everything manually:
+
+1. **Fork and Clone**
+   ```bash
+   git clone [your-forked-repo-url]
+   cd scwhab-api-client
+   ```
+
+2. **Set Up Environment**
+   Create a `.env` file in your project root:
+   ```
+   VITE_SCHWAB_CLIENT_ID=your_client_id_here
+   VITE_SCHWAB_CLIENT_SECRET=your_client_secret_here
+   ```
+
+3. **Configure Domain Settings**
+   Update `src/config/auth.ts`:
+   ```typescript
+   export const AUTH_CONFIG = {
+     clientId: import.meta.env.VITE_SCHWAB_CLIENT_ID as string,
+     clientSecret: import.meta.env.VITE_SCHWAB_CLIENT_SECRET as string,
+     redirectUri: 'https://your-subdomain.your-domain.com/callback',
+     authorizationEndpoint: 'https://api.schwabapi.com/oauth/authorize',
+     tokenEndpoint: 'https://api.schwabapi.com/oauth/token',
+     apiEndpoint: 'https://api.schwabapi.com/marketdata/v1',
+     scope: 'marketdata'
+   };
+   ```
+
+4. **Install Dependencies**
+   ```bash
+   npm install
+   ```
+
+### Managing Updates with Manual Setup
+
+For manual installations, follow these steps to manage upstream updates:
+
+1. **Configure Upstream Remote**
+   ```bash
+   git remote add upstream https://github.com/mitzvahengineering/scwhab-api-client.git
+   git fetch upstream
+   ```
+
+2. **Create Configuration Templates**
+   ```bash
+   # Save your customized versions as templates
+   cp src/config/auth.ts src/config/auth.template.ts
+   cp .env .env.template
+   ```
+
+3. **Update .gitignore**
+   Add to your `.gitignore`:
+   ```
+   # Instance-specific configuration
+   .env
+   src/config/auth.ts
+   
+   # Configuration templates (optional)
+   *.template.ts
+   .env.template
+   ```
+
+4. **Getting Updates**
+   ```bash
+   git fetch upstream
+   git merge upstream/main
+   cp src/config/auth.template.ts src/config/auth.ts
+   cp .env.template .env
+   ```
+
+Both setup methods are equally valid - choose the one that best fits your workflow. The automated script is recommended for most users as it reduces setup time and potential configuration errors, while the manual setup offers more direct control over the configuration process.
 
 ## Authentication Flow
 
