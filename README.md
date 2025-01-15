@@ -176,6 +176,63 @@ Follow these steps to deploy this application to your own domain (e.g., incremen
 
 Note: Remember to keep your client ID and secret secure and never commit them to the repository. Always use environment variables for sensitive credentials.
 
+### Managing Upstream Updates
+
+This project may receive feature updates and improvements in the upstream repository. Here's how to manage updates while keeping your custom configuration:
+
+1. **Initial Setup**
+   First, set up your upstream remote (do this once):
+   ```bash
+   git remote add upstream https://github.com/mitzvahengineering/scwhab-api-client.git
+   git fetch upstream
+   ```
+
+2. **Create Configuration Templates**
+   Create template files for your custom configuration (do this once):
+   ```bash
+   # Create auth config template
+   cp src/config/auth.ts src/config/auth.template.ts
+   
+   # Create env template
+   cp .env .env.template
+   ```
+
+3. **Add Custom Files to .gitignore**
+   Update your `.gitignore` to protect your custom configuration:
+   ```
+   # Custom configuration
+   src/config/auth.ts
+   .env
+   ```
+
+4. **Getting Updates**
+   When you want to pull in upstream changes:
+   ```bash
+   # Fetch upstream changes
+   git fetch upstream
+
+   # Merge upstream changes into your main branch
+   git merge upstream/main
+
+   # If there are conflicts in auth.ts or .env, use your preserved copies:
+   cp src/config/auth.template.ts src/config/auth.ts
+   cp .env.template .env
+   ```
+
+5. **Update Configuration Files**
+   After pulling updates:
+   - Compare new upstream configuration templates with your custom versions
+   - Update your templates if new configuration options are added
+   - Reapply your custom domain and credentials
+
+This workflow allows you to:
+- Keep your custom configuration separate from upstream changes
+- Easily identify new configuration options
+- Maintain your custom settings across updates
+- Avoid accidentally committing sensitive credentials
+
+Remember to check the upstream repository's release notes for any breaking changes or new configuration requirements.
+
 ## Development Considerations
 
 When developing locally, you'll want to understand a few key aspects of the application structure. The project uses a modular architecture where authentication, API calls, and UI components are separated into distinct concerns. This separation makes the code more maintainable and easier to test.
