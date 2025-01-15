@@ -178,7 +178,7 @@ Note: Remember to keep your client ID and secret secure and never commit them to
 
 ### Managing Upstream Updates
 
-This project may receive feature updates and improvements in the upstream repository. Here's how to manage updates while keeping your custom configuration:
+This project may receive feature updates and improvements in the upstream repository. Here's how to manage updates while preserving your instance-specific configuration:
 
 1. **Initial Setup**
    First, set up your upstream remote (do this once):
@@ -187,51 +187,59 @@ This project may receive feature updates and improvements in the upstream reposi
    git fetch upstream
    ```
 
-2. **Create Configuration Templates**
-   Create template files for your custom configuration (do this once):
+2. **Configuration Files to Preserve**
+   Currently, there are two files that contain instance-specific settings:
+   ```
+   src/config/auth.ts      # Domain and API endpoints configuration
+   .env                    # Environment variables (API credentials)
+   ```
+
+3. **Create Configuration Templates**
+   Create templates for your configuration files:
    ```bash
-   # Create auth config template
+   # Save your customized versions as templates
    cp src/config/auth.ts src/config/auth.template.ts
-   
-   # Create env template
    cp .env .env.template
    ```
 
-3. **Add Custom Files to .gitignore**
-   Update your `.gitignore` to protect your custom configuration:
+4. **Update .gitignore**
+   Ensure your `.gitignore` includes:
    ```
-   # Custom configuration
-   src/config/auth.ts
+   # Instance-specific configuration
    .env
+   src/config/auth.ts
+   
+   # Configuration templates (optional)
+   *.template.ts
+   .env.template
    ```
 
-4. **Getting Updates**
-   When you want to pull in upstream changes:
+5. **Getting Updates**
+   When pulling in upstream changes:
    ```bash
-   # Fetch upstream changes
+   # Fetch and merge upstream changes
    git fetch upstream
 
    # Merge upstream changes into your main branch
    git merge upstream/main
 
-   # If there are conflicts in auth.ts or .env, use your preserved copies:
+   # Restore your custom configuration
    cp src/config/auth.template.ts src/config/auth.ts
    cp .env.template .env
    ```
 
-5. **Update Configuration Files**
-   After pulling updates:
-   - Compare new upstream configuration templates with your custom versions
-   - Update your templates if new configuration options are added
-   - Reapply your custom domain and credentials
+6. **After Updates**
+   - Review upstream changes for any new configuration options
+   - Update your templates if new options are added
+   - Reapply your domain-specific settings
 
-This workflow allows you to:
-- Keep your custom configuration separate from upstream changes
-- Easily identify new configuration options
-- Maintain your custom settings across updates
-- Avoid accidentally committing sensitive credentials
+This workflow helps you:
+- Keep your custom configuration separate from upstream code
+- Safely incorporate upstream improvements
+- Maintain your domain-specific settings
+- Avoid exposing sensitive credentials
 
-Remember to check the upstream repository's release notes for any breaking changes or new configuration requirements.
+Note: As the project grows, additional configuration files might be added. Follow the same pattern of creating templates for any new files that require instance-specific settings.
 
 ## Development Considerations
 
