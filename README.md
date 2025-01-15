@@ -120,4 +120,13 @@ Development should follow the existing patterns for component organization, stat
 
 ## License
 
-This project is licensed under the MIT License, allowing for broad use and modification while maintaining attribution requirements. The license choice reflects our commitment to open source development while protecting both contributors and users.
+This project is licensed under the GNU General Public License v3.0 (GPLv3). This means you are free to use, modify, and distribute this software, but any derivative works must also be distributed under the same license terms. This ensures that all modifications and improvements remain free and open source.
+
+Key points of GPLv3:
+- You can use the software for any purpose
+- You can modify the software and distribute modified versions
+- You must provide the source code when you distribute the software
+- Any modifications must be released under GPLv3
+- No warranties are provided
+
+For the full license text, see the [LICENSE](LICENSE) file in the repository.
