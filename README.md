@@ -78,6 +78,63 @@ npm install
 npm run dev
 ```
 
+### Quick Setup (via BASH configuration script)
+
+After forking the repository, use our configuration script to set up your domain-specific instance:
+
+```bash
+git clone [your-forked-repo-url]
+cd scwhab-api-client
+bash scripts/configure-domain-specific-instance.bash
+```
+
+The configuration script will:
+1. Create necessary configuration templates
+2. Configure your domain settings
+3. Set up git remote for upstream updates
+4. Create an initial environment file
+5. Create a new branch for your customizations
+
+You will be prompted to enter:
+- Company name (e.g., incremental)
+- Domain (e.g., incremental.capital)
+- Subdomain for the service (e.g., schwab)
+
+The script will guide you through the remaining setup steps after configuration is complete.
+
+If you use the script, there will be the following implications for upstream updates that you'll not find in the rest of this documentation:
+
+1. **Initial Setup**
+   The upstream remote is automatically configured by the setup script, but you can verify it:
+   ```bash
+   git remote -v
+   ```
+   You should see the upstream repository listed:
+   ```bash
+   upstream    https://github.com/mitzvahengineering/scwhab-api-client.git (fetch)
+   upstream    https://github.com/mitzvahengineering/scwhab-api-client.git (push)
+   ```
+
+2. **Configuration Files**
+   The setup script creates template files for all instance-specific configurations:
+   ```
+   src/config/auth.template.ts    # Domain and API endpoints configuration template
+   .env.template                  # Environment variables template
+   ```
+
+3. **Getting Updates**
+   When pulling in upstream changes:
+   ```bash
+   # Fetch and merge upstream changes
+   git fetch upstream
+   git merge upstream/main
+
+   # Restore your custom configuration from templates
+   cp src/config/auth.template.ts src/config/auth.ts
+   cp .env.template .env
+   ```
+
+
 ## Authentication Flow
 
 Understanding the OAuth flow is crucial for working with this application. When a user first attempts to fetch options data, they're redirected to Schwab's authentication endpoint. This begins the three-legged OAuth flow:
