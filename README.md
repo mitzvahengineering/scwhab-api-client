@@ -12,6 +12,56 @@ Authentication is handled through OAuth 2.0's three-legged flow, a security stan
 
 For the user interface, we utilize shadcn/ui components, which offer a sophisticated design system built on top of Radix UI primitives. This choice provides accessible, customizable components that maintain consistency while allowing for extensive styling through Tailwind CSS. The component library is particularly well-suited for displaying financial data, offering tables, cards, and form elements that can be customized to match any design requirements.
 
+## Project Structure
+
+```
+.
+├── dist/                   # Build output directory
+├── public/                 # Static assets
+│   └── vite.svg           # Vite logo
+├── src/                   
+│   ├── assets/            # Project assets
+│   │   └── react.svg      # React logo
+│   ├── components/        # React components
+│   │   ├── Callback.tsx   # OAuth callback handler
+│   │   └── ui/           # UI components
+│   │       ├── alert.tsx  # Alert component
+│   │       ├── button.tsx # Button component
+│   │       ├── card.tsx   # Card component
+│   │       └── input.tsx  # Input component
+│   ├── config/            # Configuration files
+│   │   └── auth.ts       # Authentication configuration
+│   ├── lib/               # Utility libraries
+│   │   └── utils.ts      # Common utilities
+│   ├── services/          # Service layer
+│   │   └── auth.ts       # Authentication service
+│   ├── App.css           # Application styles
+│   ├── App.tsx           # Main application component
+│   ├── env.d.ts          # Environment type declarations
+│   ├── index.css         # Global styles
+│   ├── main.tsx          # Application entry point
+│   └── vite-env.d.ts     # Vite environment types
+├── .env                   # Environment variables
+├── .gitignore            # Git ignore rules
+├── .nvmrc                # Node version specification
+├── README.md             # Project documentation
+├── eslint.config.js      # ESLint configuration
+├── index.html            # HTML entry point
+├── package.json          # Project dependencies and scripts
+├── tsconfig.app.json     # TypeScript app configuration
+├── tsconfig.json         # TypeScript base configuration
+├── tsconfig.node.json    # TypeScript node configuration
+└── vite.config.ts        # Vite configuration
+```
+
+This structure follows a modular organization where:
+- Components are organized by feature and type
+- Configuration is centralized in the config directory
+- Services handle external interactions and business logic
+- UI components are isolated in their own directory
+- Type definitions are properly separated
+- Build and configuration files are at the root level
+
 ## Getting Started
 
 Starting with this project requires some initial setup, particularly regarding API credentials and environment configuration. First, you'll need to create a developer account with Charles Schwab and register your application to obtain the necessary credentials. These credentials should be stored in environment variables to maintain security and flexibility across different deployment environments.
