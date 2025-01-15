@@ -83,7 +83,7 @@ npm run dev
 
 Once you have your Schwab credentials, you can proceed with either the automated or manual setup process detailed in the next section.
 
-# Setup Options
+## Setup Options
 
 You can set up this project either through our automated configuration script or manually. Both methods are fully supported.
 
