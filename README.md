@@ -19,6 +19,8 @@ For the user interface, we utilize shadcn/ui components, which offer a sophistic
 ├── dist/                   # Build output directory
 ├── public/                 # Static assets
 │   └── vite.svg           # Vite logo
+├── scripts/               # Automation scripts
+│   └── configure-domain-specific-instance.bash  # Domain setup script
 ├── src/                   
 │   ├── assets/            # Project assets
 │   │   └── react.svg      # React logo
@@ -61,6 +63,7 @@ This structure follows a modular organization where:
 - UI components are isolated in their own directory
 - Type definitions are properly separated
 - Build and configuration files are at the root level
+- Automation scripts are kept in their own directory
 
 ## Getting Started
 
