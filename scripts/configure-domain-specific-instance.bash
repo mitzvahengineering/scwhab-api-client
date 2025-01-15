@@ -34,7 +34,11 @@
 #   - Git
 #   - Bash 4.0 or higher
 #   - Read/write access to the repository
+#   - Must be run from the project root or scripts directory
 #===============================================================================
+
+# Ensure we're in the project root directory
+cd "$(dirname "$0")/.." || exit 1
 
 # Exit on any error
 set -e
@@ -68,14 +72,24 @@ prompt_input() {
     printf -v "$var_name" "%s" "$value"
 }
 
+# Function to verify we're in the project root
+verify_project_root() {
+    if [[ ! -d "src" ]] || [[ ! -f "package.json" ]]; then
+        echo "Error: Script must be run from the project root directory"
+        echo "Current directory: $(pwd)"
+        exit 1
+    fi
+}
+
 # Main setup function
 main() {
     echo "Beginning configuration of Schwab Options Chain Viewer instance"
     echo "============================================================"
     echo
 
-    # Verify requirements
+    # Verify requirements and location
     check_requirements
+    verify_project_root
 
     # Gather configuration information
     prompt_input "Enter your company name (e.g., incremental)" COMPANY_NAME
