@@ -141,7 +141,14 @@ When using the automated setup, your update workflow is streamlined:
    cp src/config/auth.template.ts src/config/auth.ts
    cp .env.template .env
    ```
-
+   
+4. **Save Your Configuration** 
+   After setting up your environment and authentication:
+   ```bash
+   bash scripts/save-instance-configuration.bash
+   ```
+   This creates template files that preserve your configuration for future updates.
+   
 ## B. Manual Setup
 
 If you prefer more direct control over the setup process, you can configure everything manually:
