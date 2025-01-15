@@ -7,6 +7,7 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies
 node_modules
 dist
 dist-ssr
@@ -23,5 +24,10 @@ dist-ssr
 *.sln
 *.sw?
 
-# Environment variables
+# Instance-specific configuration
 .env
+src/config/auth.ts
+
+# Configuration templates
+*.template.ts
+.env.template
