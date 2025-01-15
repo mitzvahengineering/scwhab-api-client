@@ -94,6 +94,88 @@ This application is designed to be deployed on AWS Amplify, which provides sever
 
 The callback URL configuration is particularly important. In the Schwab developer portal, you'll need to configure the callback URL to match your deployed domain (e.g., `https://schwab.yourdomain.com/callback`). This same URL should be reflected in your application's configuration.
 
+### Deploying to a Custom Domain
+
+Follow these steps to deploy this application to your own domain (e.g., incremental.capital):
+
+1. **Fork and Clone the Repository**
+   ```bash
+   git clone [your-forked-repo-url]
+   cd scwhab-api-client
+   npm install
+   ```
+
+2. **Set Up Schwab Developer Account**
+   - Register at the Charles Schwab Developer Portal
+   - Create a new application
+   - In the application settings, set the callback URL to your domain:
+     ```
+     https://your-subdomain.your-domain.com/callback
+     ```
+     For example: `https://schwab.incremental.capital/callback`
+
+3. **Create AWS Amplify App**
+   - Log into AWS Console and go to AWS Amplify
+   - Click "New App" → "Host Web App"
+   - Connect to your GitHub repository
+   - Choose your main/master branch for deployment
+
+4. **Configure Environment Variables**
+   In AWS Amplify's Environment Variables section, add:
+   ```
+   VITE_SCHWAB_CLIENT_ID=[Your Schwab Client ID]
+   VITE_SCHWAB_CLIENT_SECRET=[Your Schwab Client Secret]
+   ```
+
+5. **Configure Custom Domain**
+   - In AWS Amplify Console, go to "Domain Management"
+   - Click "Add Domain"
+   - Enter your domain (e.g., incremental.capital)
+   - Add your subdomain (e.g., schwab)
+   - Follow AWS's instructions to verify domain ownership and update DNS records
+   - Wait for SSL certificate provisioning (can take up to 24 hours)
+
+6. **Update Application Configuration**
+   Modify `src/config/auth.ts`:
+   ```typescript
+   export const AUTH_CONFIG = {
+     clientId: import.meta.env.VITE_SCHWAB_CLIENT_ID as string,
+     clientSecret: import.meta.env.VITE_SCHWAB_CLIENT_SECRET as string,
+     redirectUri: 'https://schwab.incremental.capital/callback', // Update this
+     authorizationEndpoint: 'https://api.schwabapi.com/oauth/authorize',
+     tokenEndpoint: 'https://api.schwabapi.com/oauth/token',
+     apiEndpoint: 'https://api.schwabapi.com/marketdata/v1',
+     scope: 'marketdata'
+   };
+   ```
+
+7. **Commit and Deploy**
+   ```bash
+   git add src/config/auth.ts
+   git commit -m "Update domain configuration"
+   git push
+   ```
+   AWS Amplify will automatically deploy your changes.
+
+8. **Verify the Deployment**
+   - Visit your domain (e.g., `https://schwab.incremental.capital`)
+   - Test the OAuth flow by entering a ticker symbol
+   - Verify that the callback successfully returns to your domain
+   - Check that options chain data is being retrieved correctly
+
+9. **Update Schwab Developer Portal**
+   - If needed, update the callback URL in your Schwab developer account to match your new domain
+   - Ensure all OAuth settings match between your application and Schwab's portal
+
+10. **Troubleshooting**
+    - Check AWS Amplify build logs for any deployment issues
+    - Verify SSL certificate status in AWS Certificate Manager
+    - Ensure DNS records are properly propagated
+    - Monitor the browser console for any JavaScript errors
+    - Verify environment variables are correctly set in Amplify
+
+Note: Remember to keep your client ID and secret secure and never commit them to the repository. Always use environment variables for sensitive credentials.
+
 ## Development Considerations
 
 When developing locally, you'll want to understand a few key aspects of the application structure. The project uses a modular architecture where authentication, API calls, and UI components are separated into distinct concerns. This separation makes the code more maintainable and easier to test.
